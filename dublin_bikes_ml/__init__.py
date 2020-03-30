@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from dublin_bikes_ml.db import db_session
 
 
 def create_app(test_config=None):
@@ -22,5 +23,9 @@ def create_app(test_config=None):
     @app.route("/hello")
     def hello():
         return "hello world"
+
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        db_session.remove()
 
     return app
